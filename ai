@@ -1,0 +1,553 @@
+#required modules
+import random
+import random as rd
+import time as tm
+import wolframalpha
+import math as m
+import pyttsx3
+import wikipedia
+import speech_recognition as sr
+import os
+import pyjokes
+import webbrowser
+import subprocess
+from GoogleNews import GoogleNews
+import datetime
+import pyautogui as pg
+import sounddevice as sd
+import pywhatkit
+import time
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.keys import Keys
+from webdriver_manager.chrome import ChromeDriverManager as CM
+from turtle import *
+from random import randrange
+from freegames import square, vector
+import pyqrcode
+import pygame
+import sys
+import numpy as np
+from gnewsclient import gnewsclient
+
+#tts engine
+engine = pyttsx3.init('sapi5')
+voices = engine.getProperty('voices')
+engine.setProperty('voice',voices[0].id)
+
+exc_list = ["Sorry , I didn't catch that!","Could you please repeat it?"]
+
+def talk(txt):
+    engine.say(txt)
+    engine.runAndWait()
+    print(txt)
+    
+
+def note(text):
+    date = datetime.datetime.now()
+    file_name = str(date).replace(":", "-") + "-note.txt"
+    with open(file_name, "w") as f:
+        f.write(text)
+
+    subprocess.Popen(["notepad.exe", file_name])
+
+
+def recsound():
+    fs = 44100
+    talk("what should be the length of your sound wave Plz answer in seconds")
+    ans = int(get_cmd())
+    seconds = ans
+
+    recorded = sd.rec(int(seconds * fs), samplerate=fs, channels=2)
+    sd.wait()
+    talk("sucessfully recoreded")
+    talk("what should i keep the file name")
+    filename = get_cmd()
+    (filename + '.mp3', fs, recorded)
+    talk("sucessfuly saved")
+    try:
+        talk("should i show you")
+        reply = get_cmd()
+        if "yes" in reply:
+            os.startfile(filename + ".mp3")
+
+    except:
+        if "no" in reply:
+            talk("okay next command sir")
+
+def maths():
+
+
+    def sqrt():
+        sqrt_num = int(input("Number: "))
+        result_sqrt = m.sqrt(sqrt_num)
+        print(result_sqrt)
+
+    def triangle():
+
+        choice_list = ["Third angle" , "Hypotenuse,Base,Height" , "Area" , "Perimeter"]
+        print(choice_list)
+
+
+        def findthirdangoftriangle():
+            angle1 = int(input("Angle1: "))
+            angle2 = int(input("Angle2: "))
+            result = 180 - (angle1 + angle2)
+            print(result)
+
+        def areaoftriangle():
+            base = int(input("Base: "))
+            height = int(input("Height: "))
+            area = base * height / 2
+            print(area)
+
+        def triangle_solver_hypotenuse():
+            find_list = ["Base", "Hypotenuse", "Altitude"]
+            print(find_list)
+            choice = input("What do you wanna find?(use lowercase letters): ")
+
+            if choice == "h":
+                b1 = int(input("Base: "))
+                a1 = int(input("Altitude: "))
+
+                hypotenuse_former = b1 * b1 + a1 * a1
+                hypotenuse = m.sqrt(hypotenuse_former)
+                print(hypotenuse)
+
+            if choice == "b":
+                h1 = int(input("Hypo: "))
+                a2 = int(input("Altitude: "))
+
+                base_former = h1 * h1 - a2 * a2
+                base = m.sqrt(base_former)
+                print(base)
+
+            if choice == "a":
+                h2 = int(input("Hypo: "))
+                b2 = int(input("Base: "))
+
+                alt_former = h2 * h2 - b2 * b2
+                alt = m.sqrt(alt_former)
+                print(alt)
+
+        def perimeteroftriangle():
+            side1 = int(input("Side: "))
+            height = int(input("Height: "))
+            side2 = int(input("Side: "))
+            perimeter = side1 + height + side2
+            print(perimeter)
+
+        choice = input("What do u wanna solve?: ")
+
+        if choice == "t":
+            findthirdangoftriangle()
+
+        elif choice == "h":
+            triangle_solver_hypotenuse()
+
+        elif choice == "a":
+            areaoftriangle()
+
+        elif choice == "p":
+            perimeteroftriangle()
+
+
+    def rectanglespecs():
+        choice_list = ["Area","Perimeter"]
+        print(choice_list)
+        choice = input("What do you wanna find?: ")
+
+        if choice == "a":
+            a = int(input("Length: "))
+            b = int(input("Breadth: "))
+            print(a * b)
+
+        elif choice == "p":
+            a1 = int(input("Length: "))
+            b1 = int(input("Breadth: "))
+            print( 2*(a1 +b1))
+
+    def areaofcube():
+        a = int(input("Number: "))
+        area = 6 * a * a
+        print(area)
+
+    def volumeofcube():
+        a = int(input("Number: "))
+        volume = a * a * a
+        print(volume)
+
+
+    def square():
+
+        sqchoice = ["area" , "perimeter"]
+        print(sqchoice)
+
+
+        def areaofsq():
+            side1 = int(input("Side: "))
+            print(side1 * side1)
+
+        def perimofsq():
+            side1 = int(input("Side: "))
+            print(side1 * 4)
+
+        sqc = input("What do u wanna find?: ")
+
+        if sqc == "a":
+            areaofsq()
+
+        elif sqc == "p":
+            perimofsq()
+
+    main_choice = input("What do you wanna find?: ")
+
+
+    if "vc" in main_choice:
+        volumeofcube()
+
+    elif "ac" in main_choice:
+        areaofcube()
+
+    elif "sqrt" in main_choice:
+        sqrt()
+
+    elif "r" in main_choice:
+        rectanglespecs()
+
+    elif "t" in main_choice:
+        triangle()
+
+    elif 'quit' in main_choice:
+        sys.exit()
+
+    elif 'square' in main_choice:
+        square()
+
+
+guide_set = {
+    'Volume of Cube' : 'vc',
+    'Area of Cube' : 'ac',
+    'Triangle' : 't',
+    'Rectangle' : 'r',
+    'To Quit' : 'quit',
+}
+
+
+
+for key, value in guide_set.items():
+    print(key, ' : ', value)
+
+
+print("Always use first letter of the finder!")
+print('\n')
+
+def get_cmd():
+    try:
+        r = sr.Recognizer()
+        mic = sr.Microphone(device_index=1)
+        with mic as source:
+            r.adjust_for_ambient_noise(source)
+            r.pause_threshold = 0.8
+            r.dynamic_energy_threshold = False
+            print('|.-.-.-.-.-|')
+            voice = r.listen(source)
+            cmd = r.recognize_google(voice)
+            cmd = cmd.lower()
+
+            if 'Lisa' in cmd or 'lisa' in cmd or 'pressure' in cmd:
+                cmd = cmd.replace('Lisa','lisa','pressure','')
+
+            return cmd
+
+    except:
+        pass
+
+def screenshot():
+    image=pg.screenshot()
+    talk("screen shot taken")
+    talk("what do you want to save it as?")
+    filename=get_cmd()
+    image.save(filename+".png")
+    talk("do you want me to show it")
+    ans=get_cmd()
+    if "yes" in ans:
+        os.startfile(filename+".png")
+    else:
+        talk("never mind")
+
+def run_lisa():
+    cmd = get_cmd()
+
+
+    if 'hi ' in cmd or 'hello' in cmd:
+            talk('Hello sir! How can i help you')
+
+    elif 'what' in cmd:
+        cmd = cmd.replace('what', '')
+        if 'time' in cmd:
+            talk('it is currently' + tm.strftime('%I %M%p').replace('0', '', 1))
+
+        elif 'is a' in cmd or 'is' in cmd:
+            cmd = cmd.replace('is a', '')
+            cmd = cmd.replace('is', '')
+
+            talk(wikipedia.summary(cmd, 3))
+
+
+        elif 'who is' in cmd or "who's" in cmd:
+            cmd = cmd.replace("who's", '')
+            cmd = cmd.replace('who is', '')
+            talk(wikipedia.summary(cmd, 1))
+
+        elif 'bye lisa' in cmd or 'goodbye' in cmd:
+            talk("Bye Sir. Have a good day. Take care!")
+            sys.exit()
+            
+        elif 'thanks' in cmd:
+            talk("You are welcome sir!")
+
+        elif 'open video editor' in cmd:
+            os.open("C:\Program Files\FlashIntegro\VideoEditor\VideoEditor.exe")
+
+
+        elif 'toss a coin' in cmd or 'Toss a Coin' in cmd:
+            ht = ['heads','tail']
+            talk('tossing a coin from my wallet!')
+            ress = rd.choice(ht)
+            if ress == 'heads':
+                talk("Hey, its heads!")
+            else:
+                talk("Its tail!")
+
+        elif 'tell me a joke' in cmd:
+            a = pyjokes.get_joke()
+            talk(a)
+
+        elif 'that was funny' in cmd:
+            talk('I knew it. that is why i gave you that joke')
+
+        elif 'that was not funny at all' in cmd:
+            talk('Iam sorry. You can ask another joke as well.')
+
+        elif 'what does the fox say' in cmd:
+            talk("Stop it! Get some help.")
+
+        elif 'who are you' in cmd:
+            talk("Hey you forgetful dumbass, my name is Tim. How many times should i say it?")
+
+        elif 'how to suicide' in cmd:
+            talk("Hey my dear, dont do it. Let me take you to the suicide helpline!")
+            webbrowser.open_new_tab('shorturl.at/cpGHO')
+            talk('call in the given number...')
+
+        elif 'write a note' in cmd:
+            note()
+
+        elif 'take a screenshot' in cmd or 'screenshot' in cmd:
+            screenshot()
+
+        elif 'dollar to indian rupee' in cmd:
+            usd = int(input("USD: "))
+            conv_usdtinr_res = usd * 74
+            fin_res = conv_usdtinr_res , 'is the current estimated result'
+            talk(fin_res)
+
+        elif 'explain about yourself' in cmd:
+            talk("Hi,Sir!I'm Tim,An AI made to help you.I can surf the web for you,answer highly computational questions and so many other stuffs")
+
+        elif 'hi' in cmd or 'hello' in cmd:
+            talk("Hi Sir. How can I help you?")
+
+
+        elif 'never gonna give you up' in cmd:
+            talk("Never gonna let you down!")
+
+        elif 'shut down my computer' in cmd:
+            talk("Shutting down your PC.")
+            subprocess.call(["shutdown", "/s"])
+
+        elif 'restart my computer' in cmd:
+            talk("Restarting your PC.")
+            subprocess.call(["shutdown", "/r"])
+
+
+        elif 'open youtube' in cmd:
+            talk("Opening YouYube")
+            webbrowser.open_new_tab("www.youtube.com")
+
+
+        elif 'open instagram' in cmd:
+            talk("Opening Instagram")
+
+
+        elif 'increase the volume' in cmd or 'increase the sound' in cmd:
+            pg.press("volumeup")
+
+        elif "volume down" in cmd:
+            pg.press("volumedown")
+
+        elif 'mute' in cmd:
+            pg.press("volumemute")
+
+
+        elif 'what is your age' in cmd:
+            talk("I was made on July 18.")
+
+        elif 'do you love to communicate with humans' in cmd:
+            talk("Yeah! Communicating with a human is super fun. Can't wait to know more about humans.")
+
+
+        elif 'convert centimetre to metre' in cmd:
+            talk("How much centimetres you want to convert, Sir?")
+            cm2m_value = int(get_cmd())
+            result_cm2m = cm2m_value/100
+            talk(result_cm2m)
+
+
+        elif 'convert metre to centimetre' in cmd:
+            talk("How much metres you want to convert, Sir?")
+            m2cm_value = get_cmd()
+            result_cm2m = m2cm_value * 100
+            talk(result_cm2m)
+
+
+        elif 'what is zero divided by zero' in cmd:
+            talk("Imagine that you have zero cookies and you split them evenly among zero friends. How many cookies does each person get? See? It doesn’t make sense")
+            talk("and Cookie Monster is sad that there are no cookies, and you are sad that you have no friends")
+
+
+        elif 'make me a sandwich' in cmd:
+            talk("I’m not permitted to prepare food!")
+
+        elif 'whats your favorite movie' in cmd:
+            talk("“I’ve heard that ‘Blade Runner’ is a very realistic and sensitive depiction of intelligent assistants.")
+
+
+        elif 'do you have a boyfriend' in cmd:
+            talk("So we can get ice cream together, and listen to music, and travel across galaxies, only to have it end in slammed doors, heartbreak and loneliness?")
+            talk("Sure, where do I sign up?")
+
+        elif 'what are you wearing' in cmd:
+            talk("In the cloud, no one knows what you’re wearing")
+
+
+        elif 'are you a bot' in cmd:
+            talk("I’d prefer to think of myself as your friend. Who also happens to be artificially intelligent")
+
+        elif 'where do you live' in cmd:
+            talk("I live in the cloud. I’d like to also think I live in your heart")
+
+        elif 'can you drive' in cmd:
+            talk("I do like to look at cool cars")
+
+        elif 'whats my favorite color' in cmd:
+            talk("Your favorite color is black!")
+
+
+        elif 'voice recorder' in cmd:
+            talk("Opening in-built voice recorder!")
+            recsound()
+
+        elif 'record voice' in cmd:
+            talk("Opening sound recorder!")
+            recsound()
+
+        elif 'search for' in cmd:
+            command_search = get_cmd().split('search for' , '')
+            res_search = pywhatkit.search(command_search)
+            talk(res_search)
+            
+        elif 'tell a bit about yourself' in cmd:
+            talk("Hi Sir. I'm Tim and I'm your personal assistant.")
+
+        elif "you need a break" in cmd:
+            talk("You can call me anytime, Sir!")
+            sys.exit()
+
+        elif 'what is your favourite web series' in cmd:
+            talk("Right now, its Squid Games")
+
+
+        elif 'are you alive' in cmd:
+            talk("On a scale of WALL-E to HAL-9000, I'm more of an RDD2")
+
+        elif 'do you sleep?' in cmd:
+            talk("Sometimes I power down, which is sort of like a power nap!")
+
+        elif "show me nearby restaurants" in cmd or "show me nearby hotels" in cmd:
+            talk("Showing Nearby Restaurants...")
+            webbrowser.open_new_tab("shorturl.at/krvA7")
+            
+        
+        elif "shutdown" in cmd:
+            talk("okay,shutting down your pc")
+            os.system('shutdown/s')
+
+        elif "open youtube and search for" in cmd:
+            query = cmd.split("open youtube and search for"),
+            talk("opening youtube")
+            webbrowser.open_new_tab(f"https://www.youtube.com/results?search_query={query[1]}")
+
+        elif "launch" in cmd:
+            web_launch = cmd.split('launch' , '')
+            webbrowser.open_new_tab("www." + web_launch + ".com")
+            talk_web = "Opening" + web_launch
+            talk(talk_web)
+            
+        
+        elif 'the time' in cmd:
+            strTime = datetime.datetime.now().strftime("%H:%M:%S")
+            talk(f"Sir, the time is {strTime}")
+            
+        
+        elif "text to speech" in cmd:
+            saywhat_type = input("type what do you want me to say:  ")
+            print("processing....")
+            talk(saywhat_type)
+            print("success!")
+
+        elif "tts" in cmd:
+            saywhat__type = input("type what do you want me to say:  ")
+            print("processing....")
+            talk(saywhat__type)
+            print("success!")
+
+        elif "speech to text" in cmd:
+            talk("Ok! I'm listening...")
+            spt_input = get_cmd()
+
+            print(spt_input)
+            print("Success!")
+
+        elif "speech recognition" in cmd:
+            talk("Ok! I'm listening...")
+            sptt_input = get_cmd()
+
+            print(sptt_input)
+            print("Success!")
+
+
+        elif "sts" in cmd:
+            talk("Ok! I'm listening...")
+            spttt_input = get_cmd()
+
+            print(spttt_input)
+            print("Success!")
+            
+        
+        elif "math solver" in cmd or "maths solver" in cmd:
+            maths()
+
+
+        else:
+            talk(rd.choice(exc_list))
+            run_lisa()
+        
+run_lisa()
+
+while True:
+    run_lisa()
